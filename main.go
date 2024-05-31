@@ -267,4 +267,12 @@ func setupReconcilers(ctx context.Context, base utils.ReconcilerBase, opts manag
 		setupLog.Error(err, "unable to create controller", "controller", "CloudStackFailureDomain")
 		os.Exit(1)
 	}
+	if err := (&controllers.CksClusterReconciler{ReconcilerBase: base}).SetupWithManager(mgr); err != nil {
+		setupLog.Error(err, "unable to create controller", "controller", "CKSClusterController")
+		os.Exit(1)
+	}
+	if err := (&controllers.CksMachineReconciler{ReconcilerBase: base}).SetupWithManager(mgr); err != nil {
+		setupLog.Error(err, "unable to create controller", "controller", "CKSMachineController")
+		os.Exit(1)
+	}
 }
