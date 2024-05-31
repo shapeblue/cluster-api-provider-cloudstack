@@ -59,12 +59,6 @@ var _ = Describe("CloudStackMachineReconciler", func() {
 				func(arg1, _, _ interface{}) {
 					arg1.(*infrav1.CloudStackCluster).Status.CloudStackClusterID = "cluster-id-123"
 				}).AnyTimes().Return(nil)
-
-			mockCloudClient.EXPECT().AddVMToUnmanagedCluster(
-				gomock.Any(), gomock.Any()).AnyTimes().Return(nil)
-
-			mockCloudClient.EXPECT().RemoveVMFromUnmanagedCluster(
-				gomock.Any(), gomock.Any()).AnyTimes().Return(nil)
 		})
 
 		It("Should call GetOrCreateVMInstance and set Status.Ready to true", func() {
@@ -251,8 +245,6 @@ var _ = Describe("CloudStackMachineReconciler", func() {
 				func(arg1, _, _, _, _, _ interface{}) {
 					arg1.(*infrav1.CloudStackMachine).Status.InstanceState = "Running"
 				}).AnyTimes()
-			mockCloudClient.EXPECT().AddVMToUnmanagedCluster(
-				gomock.Any(), gomock.Any()).AnyTimes().Return(nil)
 			Ω(fakeCtrlClient.Get(ctx, key, dummies.CSCluster)).Should(Succeed())
 			Ω(fakeCtrlClient.Create(ctx, dummies.CAPIMachine)).Should(Succeed())
 			Ω(fakeCtrlClient.Create(ctx, dummies.CSMachine1)).Should(Succeed())
